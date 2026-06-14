@@ -1,0 +1,2327 @@
+</body>
+</html><!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#0a0a0a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>الحلقات القرآنية | إدارة المساجد</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&family=Amiri:ital,wght@0,400;0,700;1,400&family=El+Messiri:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js">
+    </script>
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js">
+    </script>
+    <style>
+        :root {
+            --gold-king: #d4a037;
+            --gold-light: #f0d068;
+            --gold-dark: #b8861e;
+            --royal-blue: #1a2a4a;
+            --emerald: #0d7c3e;
+            --ruby: #b13131;
+            --glass-bg: rgba(255, 255, 255, 0.35);
+            --glass-bg-dark: rgba(20, 20, 30, 0.55);
+            --glass-border: rgba(212, 160, 55, 0.25);
+            --glass-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+            --accent-gradient: linear-gradient(135deg, #d4a037 0%, #f0d068 35%, #b8861e 100%);
+            --islamic-pattern: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cg fill='%23d4a037' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        .dark {
+            --glass-bg: rgba(20, 20, 30, 0.6);
+            --glass-bg-dark: rgba(15, 15, 22, 0.7);
+            --glass-border: rgba(212, 160, 55, 0.3);
+            --glass-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Cairo', 'El Messiri', sans-serif;
+            background: linear-gradient(160deg, #fdf8f0 0%, #f5ecd7 30%, #faf3e4 60%, #efe0c8 100%);
+            min-height: 100vh;
+            transition: background 0.5s;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-user-select: none;
+            overflow-x: hidden;
+            position: relative;
+        }
+        body.dark {
+            background: linear-gradient(160deg, #0a0a0f 0%, #101520 30%, #0d0d14 60%, #08080e 100%);
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: var(--islamic-pattern);
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.5;
+        }
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(ellipse at 25% 20%, rgba(212, 160, 55, 0.06) 0%, transparent 55%),
+                radial-gradient(ellipse at 75% 80%, rgba(26, 42, 74, 0.05) 0%, transparent 55%),
+                radial-gradient(ellipse at 50% 50%, rgba(13, 124, 62, 0.03) 0%, transparent 60%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        body.dark::after {
+            background: radial-gradient(ellipse at 25% 20%, rgba(212, 160, 55, 0.12) 0%, transparent 55%),
+                radial-gradient(ellipse at 75% 80%, rgba(44, 66, 112, 0.1) 0%, transparent 55%);
+        }
+
+        #splashScreen {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: rgba(10, 10, 15, 0.92);
+            backdrop-filter: blur(30px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.6s, visibility 0.6s;
+        }
+        #splashScreen.hide {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        .splash-outer-ring {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            border: 2px solid rgba(212, 160, 55, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: splashOuter 3s linear infinite;
+            margin-bottom: 20px;
+        }
+        .splash-inner-ring {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: var(--accent-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 80px rgba(212, 160, 55, 0.5), 0 0 150px rgba(212, 160, 55, 0.2);
+            animation: splashPulse 2s ease-in-out infinite;
+        }
+        @keyframes splashOuter {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        @keyframes splashPulse {
+            0%,
+            100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.08);
+            }
+        }
+        .splash-inner-ring i {
+            font-size: 40px;
+            color: #fff;
+        }
+        .splash-title {
+            font-family: 'Amiri', 'El Messiri', serif;
+            font-size: 32px;
+            font-weight: 700;
+            color: #f0d068;
+            text-shadow: 0 0 40px rgba(212, 160, 55, 0.6);
+            letter-spacing: 2px;
+        }
+        .splash-subtitle {
+            color: #c0b090;
+            font-size: 14px;
+            margin-top: 6px;
+        }
+        .splash-loading {
+            margin-top: 30px;
+            width: 60px;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .splash-loading-bar {
+            height: 100%;
+            background: var(--accent-gradient);
+            border-radius: 3px;
+            animation: load 2s infinite;
+            width: 35%;
+        }
+        @keyframes load {
+            0% {
+                transform: translateX(-100%);
+            }
+            100% {
+                transform: translateX(280%);
+            }
+        }
+
+        .login-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        .login-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(24px) saturate(200%);
+            -webkit-backdrop-filter: blur(24px) saturate(200%);
+            border-radius: 32px;
+            padding: 32px 24px;
+            width: 100%;
+            max-width: 440px;
+            box-shadow: var(--glass-shadow);
+            border: 1px solid var(--glass-border);
+            animation: slideUp 0.7s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+        .login-card::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            left: -50px;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(212, 160, 55, 0.2) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .login-card::after {
+            content: '';
+            position: absolute;
+            bottom: -40px;
+            right: -40px;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(26, 42, 74, 0.15) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .login-logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--accent-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+            box-shadow: 0 12px 40px rgba(212, 160, 55, 0.45);
+            position: relative;
+            z-index: 1;
+        }
+        .login-logo i {
+            font-size: 36px;
+            color: #fff;
+        }
+        .login-header {
+            text-align: center;
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 1;
+        }
+        .login-header h2 {
+            font-family: 'Amiri', serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: #1a1a2e;
+        }
+        .dark .login-header h2 {
+            color: #f0d068;
+        }
+        .mosque-name-display {
+            font-size: 14px;
+            color: var(--gold-king);
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+        .login-header p {
+            font-size: 11px;
+            color: #777;
+        }
+        .form-group {
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 1;
+        }
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: #3a3a4a;
+        }
+        .dark .form-group label {
+            color: #c0b090;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 11px 14px;
+            border-radius: 12px;
+            border: 1px solid rgba(212, 160, 55, 0.25);
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(8px);
+            font-family: inherit;
+            font-size: 13px;
+            outline: none;
+            transition: 0.3s;
+            color: #1a1a2e;
+        }
+        .dark .form-group input,
+        .dark .form-group select,
+        .dark .form-group textarea {
+            background: rgba(20, 20, 30, 0.6);
+            color: #e0d8c8;
+            border-color: rgba(212, 160, 55, 0.2);
+        }
+        .form-group input:focus {
+            border-color: var(--gold-king);
+            box-shadow: 0 0 0 4px rgba(212, 160, 55, 0.1);
+        }
+        .role-selector {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 14px;
+            position: relative;
+            z-index: 1;
+            flex-wrap: wrap;
+        }
+        .role-btn {
+            flex: 1;
+            min-width: 80px;
+            padding: 10px 8px;
+            border-radius: 12px;
+            border: 1px solid rgba(212, 160, 55, 0.25);
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(6px);
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 700;
+            transition: 0.4s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            color: #3a3a4a;
+        }
+        .dark .role-btn {
+            background: rgba(30, 30, 40, 0.5);
+            color: #c0b090;
+        }
+        .role-btn.active {
+            background: var(--accent-gradient);
+            color: #fff;
+            border-color: transparent;
+            box-shadow: 0 8px 28px rgba(212, 160, 55, 0.5);
+            transform: translateY(-2px);
+            letter-spacing: 1px;
+        }
+        .login-btn {
+            width: 100%;
+            padding: 13px;
+            border-radius: 14px;
+            border: none;
+            background: var(--accent-gradient);
+            color: #fff;
+            font-family: inherit;
+            font-size: 15px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.4s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 10px 35px rgba(212, 160, 55, 0.5);
+            letter-spacing: 1px;
+            position: relative;
+            z-index: 1;
+        }
+        .login-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 16px 45px rgba(212, 160, 55, 0.6);
+        }
+        .login-footer {
+            text-align: center;
+            margin-top: 14px;
+            font-size: 10px;
+            color: #999;
+            position: relative;
+            z-index: 1;
+        }
+        .login-tabs {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 14px;
+            position: relative;
+            z-index: 1;
+        }
+        .login-tab {
+            flex: 1;
+            padding: 8px;
+            border-radius: 10px;
+            border: 1px solid rgba(212, 160, 55, 0.2);
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 700;
+            text-align: center;
+            transition: 0.3s;
+            color: #3a3a4a;
+        }
+        .dark .login-tab {
+            background: rgba(30, 30, 40, 0.4);
+            color: #c0b090;
+        }
+        .login-tab.active {
+            background: var(--accent-gradient);
+            color: #fff;
+            border-color: transparent;
+        }
+        .qr-section {
+            text-align: center;
+            padding: 10px;
+            position: relative;
+            z-index: 1;
+        }
+        .qr-container {
+            display: inline-block;
+            background: #fff;
+            padding: 10px;
+            border-radius: 14px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            margin: 8px 0;
+        }
+        .qr-container canvas,
+        .qr-container img {
+            display: block;
+            max-width: 160px;
+            height: auto;
+        }
+
+        #appMain {
+            max-width: 600px;
+            margin: 0 auto;
+            padding-bottom: 90px;
+            min-height: 100vh;
+            display: none;
+            position: relative;
+            z-index: 1;
+        }
+        .glass-header {
+            background: var(--glass-bg);
+            backdrop-filter: blur(28px) saturate(200%);
+            -webkit-backdrop-filter: blur(28px) saturate(200%);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 12px 16px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-radius: 0 0 24px 24px;
+            box-shadow: var(--glass-shadow);
+        }
+        .dark .glass-header {
+            background: var(--glass-bg-dark);
+        }
+        .header-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 4px;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: var(--accent-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 16px;
+            box-shadow: 0 6px 22px rgba(212, 160, 55, 0.45);
+        }
+        .logo-text strong {
+            font-size: 14px;
+            font-weight: 800;
+            display: block;
+            color: #1a1a2e;
+        }
+        .dark .logo-text strong {
+            color: #f0d068;
+        }
+        .logo-text small {
+            font-size: 9px;
+            color: #888;
+        }
+        .header-actions {
+            display: flex;
+            gap: 6px;
+        }
+        .icon-btn {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            border: 1px solid rgba(212, 160, 55, 0.3);
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #4a3a2a;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 14px;
+        }
+        .dark .icon-btn {
+            background: rgba(30, 30, 40, 0.5);
+            color: #c0b090;
+        }
+        .icon-btn:hover {
+            background: var(--accent-gradient);
+            color: #fff;
+            border-color: transparent;
+            box-shadow: 0 6px 20px rgba(212, 160, 55, 0.4);
+        }
+        .date-card {
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(14px);
+            border-radius: 14px;
+            padding: 8px 14px;
+            border: 1px solid rgba(212, 160, 55, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .date-card:hover {
+            border-color: var(--gold-king);
+            box-shadow: 0 4px 16px rgba(212, 160, 55, 0.15);
+        }
+        .dark .date-card {
+            background: rgba(20, 20, 30, 0.5);
+        }
+        .stats-mini {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+        .stat-chip {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(8px);
+            border-radius: 16px;
+            padding: 4px 10px;
+            font-size: 9px;
+            font-weight: 700;
+            border: 1px solid rgba(212, 160, 55, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .stat-chip.present {
+            color: #0d7c3e;
+            border-color: rgba(13, 124, 62, 0.3);
+        }
+        .stat-chip.absent {
+            color: #b13131;
+            border-color: rgba(177, 49, 49, 0.3);
+        }
+        .container {
+            padding: 12px;
+        }
+        .section {
+            display: none;
+            animation: fadeIn 0.4s ease-out;
+        }
+        .section.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(14px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(22px) saturate(180%);
+            -webkit-backdrop-filter: blur(22px) saturate(180%);
+            border-radius: 22px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+            transition: 0.3s;
+        }
+        .card:hover {
+            box-shadow: 0 18px 50px rgba(0, 0, 0, 0.18);
+        }
+        .dark .card {
+            background: var(--glass-bg-dark);
+        }
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .card-title {
+            font-size: 15px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #1a1a2e;
+        }
+        .dark .card-title {
+            color: #e0d8c8;
+        }
+        .section-title {
+            font-size: 18px;
+            font-weight: 900;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #1a1a2e;
+        }
+        .dark .section-title {
+            color: #f0d068;
+        }
+        .btn {
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: none;
+            font-family: inherit;
+            font-weight: 700;
+            font-size: 11px;
+            cursor: pointer;
+            transition: 0.35s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            backdrop-filter: blur(8px);
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+        .btn-primary {
+            background: var(--accent-gradient);
+            color: #fff;
+            box-shadow: 0 8px 28px rgba(212, 160, 55, 0.5);
+        }
+        .btn-primary:hover {
+            box-shadow: 0 14px 38px rgba(212, 160, 55, 0.6);
+            transform: translateY(-3px);
+        }
+        .btn-green {
+            background: linear-gradient(135deg, #0d7c3e, #15b350);
+            color: #fff;
+            box-shadow: 0 6px 20px rgba(13, 124, 62, 0.4);
+        }
+        .btn-red {
+            background: linear-gradient(135deg, #b13131, #d44);
+            color: #fff;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--gold-king);
+            color: var(--gold-king);
+            font-weight: 700;
+        }
+        .btn-outline:hover {
+            background: var(--gold-king);
+            color: #fff;
+        }
+        .btn-wa {
+            background: #25D366;
+            color: #fff;
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.5);
+        }
+        .btn-telegram {
+            background: #0088cc;
+            color: #fff;
+            box-shadow: 0 6px 20px rgba(0, 136, 204, 0.4);
+        }
+        .btn-email {
+            background: #555;
+            color: #fff;
+            box-shadow: 0 6px 20px rgba(85, 85, 85, 0.4);
+        }
+        .btn-copy {
+            background: #6c5ce7;
+            color: #fff;
+            box-shadow: 0 6px 20px rgba(108, 92, 231, 0.4);
+        }
+        .btn-sm {
+            padding: 5px 12px;
+            font-size: 9px;
+            border-radius: 18px;
+        }
+        .btn-xs {
+            padding: 3px 8px;
+            font-size: 8px;
+            border-radius: 14px;
+        }
+        .student-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 12px;
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(12px);
+            border-radius: 14px;
+            margin-bottom: 6px;
+            border: 1px solid rgba(212, 160, 55, 0.15);
+            transition: 0.3s;
+            cursor: pointer;
+        }
+        .dark .student-item {
+            background: rgba(25, 25, 35, 0.5);
+        }
+        .student-item:hover {
+            border-color: var(--gold-king);
+            box-shadow: 0 6px 20px rgba(212, 160, 55, 0.15);
+            transform: translateX(-3px);
+        }
+        .student-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 14px;
+            color: #fff;
+            position: relative;
+            background: var(--accent-gradient);
+            box-shadow: 0 4px 14px rgba(212, 160, 55, 0.4);
+        }
+        .status-dot {
+            position: absolute;
+            bottom: -2px;
+            right: -2px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+        }
+        .status-dot.present {
+            background: #15b350;
+        }
+        .status-dot.absent {
+            background: #d44;
+        }
+        .status-dot.late {
+            background: #f0a030;
+        }
+        .student-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .student-name {
+            font-weight: 800;
+            font-size: 13px;
+            color: #1a1a2e;
+        }
+        .dark .student-name {
+            color: #e0d8c8;
+        }
+        .student-detail {
+            font-size: 9px;
+            color: #666;
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .attendance-toggle {
+            display: flex;
+            gap: 3px;
+        }
+        .att-btn {
+            padding: 4px 8px;
+            border-radius: 14px;
+            border: 2px solid rgba(212, 160, 55, 0.3);
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(6px);
+            cursor: pointer;
+            font-size: 8px;
+            font-weight: 700;
+            transition: 0.3s;
+            white-space: nowrap;
+            color: #3a3a4a;
+        }
+        .att-btn.present-active {
+            background: #0d7c3e;
+            color: #fff;
+            border-color: #0d7c3e;
+        }
+        .att-btn.absent-active {
+            background: #b13131;
+            color: #fff;
+            border-color: #b13131;
+        }
+        .att-btn.late-active {
+            background: #f0a030;
+            color: #fff;
+            border-color: #f0a030;
+        }
+        .points-input,
+        .pages-input {
+            width: 42px;
+            padding: 4px;
+            border-radius: 8px;
+            border: 1px solid rgba(212, 160, 55, 0.3);
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(8px);
+            text-align: center;
+            font-size: 10px;
+            font-weight: 700;
+            font-family: inherit;
+            color: #1a1a2e;
+        }
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 600px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(30px) saturate(200%);
+            -webkit-backdrop-filter: blur(30px) saturate(200%);
+            border-top: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 5px 8px;
+            padding-bottom: max(5px, env(safe-area-inset-bottom));
+            z-index: 100;
+            border-radius: 22px 22px 0 0;
+            box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.1);
+        }
+        .dark .bottom-nav {
+            background: var(--glass-bg-dark);
+        }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            padding: 5px 10px;
+            border-radius: 12px;
+            cursor: pointer;
+            color: #5a4a3a;
+            font-size: 9px;
+            font-weight: 600;
+            border: none;
+            background: transparent;
+            font-family: inherit;
+            transition: 0.3s;
+            position: relative;
+        }
+        .dark .nav-item {
+            color: #a09080;
+        }
+        .nav-item i {
+            font-size: 16px;
+            transition: 0.3s;
+        }
+        .nav-item.active {
+            color: var(--gold-king);
+            font-weight: 800;
+        }
+        .nav-item.active i {
+            transform: scale(1.15);
+        }
+        .nav-item.active::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            width: 22px;
+            height: 2px;
+            border-radius: 0 0 3px 3px;
+            background: var(--accent-gradient);
+        }
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(8px);
+            z-index: 200;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+        }
+        .modal-sheet {
+            background: var(--glass-bg);
+            backdrop-filter: blur(28px) saturate(200%);
+            -webkit-backdrop-filter: blur(28px) saturate(200%);
+            width: 100%;
+            max-width: 600px;
+            max-height: 85vh;
+            border-radius: 26px 26px 0 0;
+            padding: 20px 16px;
+            overflow-y: auto;
+            box-shadow: 0 -14px 50px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
+        }
+        .dark .modal-sheet {
+            background: var(--glass-bg-dark);
+        }
+        .modal-handle {
+            width: 40px;
+            height: 4px;
+            background: #ccc;
+            border-radius: 4px;
+            margin: 0 auto 12px;
+        }
+        .modal-header-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+        }
+        .modal-close {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 1px solid rgba(212, 160, 55, 0.3);
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(8px);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #4a3a2a;
+            transition: 0.3s;
+        }
+        .modal-close:hover {
+            background: #b13131;
+            color: #fff;
+        }
+        #toastContainer {
+            position: fixed;
+            top: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            pointer-events: none;
+            max-width: 90vw;
+        }
+        .toast-item {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(18px);
+            border-radius: 12px;
+            padding: 10px 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(212, 160, 55, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+            font-size: 12px;
+            animation: toastIn 0.4s;
+            pointer-events: auto;
+        }
+        @keyframes toastIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .toast-item.success {
+            border-right: 4px solid #0d7c3e;
+        }
+        .toast-item.error {
+            border-right: 4px solid #b13131;
+        }
+        .toast-item.info {
+            border-right: 4px solid var(--gold-king);
+        }
+        .empty-state {
+            text-align: center;
+            padding: 35px 18px;
+            color: #999;
+        }
+        .empty-state i {
+            font-size: 42px;
+            margin-bottom: 8px;
+            color: #ccc;
+        }
+        .highlight-box {
+            background: rgba(212, 160, 55, 0.08);
+            border-right: 4px solid var(--gold-king);
+            padding: 10px 14px;
+            border-radius: 10px;
+            margin: 6px 0;
+            font-size: 11px;
+        }
+        .color-preset {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: 0.3s;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        .color-preset.selected {
+            border-color: #fff;
+            transform: scale(1.2);
+            box-shadow: 0 0 20px rgba(212, 160, 55, 0.6);
+        }
+        .share-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        .share-btn-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            padding: 16px 10px;
+            border-radius: 16px;
+            border: 1px solid var(--glass-border);
+            background: var(--glass-bg);
+            cursor: pointer;
+            transition: 0.3s;
+            text-align: center;
+            font-weight: 700;
+            font-size: 11px;
+            color: #1a1a2e;
+        }
+        .dark .share-btn-card {
+            background: var(--glass-bg-dark);
+            color: #e0d8c8;
+        }
+        .share-btn-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--glass-shadow);
+            border-color: var(--gold-king);
+        }
+        .share-btn-card i {
+            font-size: 28px;
+        }
+        .d-flex {
+            display: flex;
+        }
+        .gap-2 {
+            gap: 8px;
+        }
+        .gap-1 {
+            gap: 4px;
+        }
+        .flex-wrap {
+            flex-wrap: wrap;
+        }
+        .flex-1 {
+            flex: 1;
+        }
+        .w-100 {
+            width: 100%;
+        }
+        .mb-2 {
+            margin-bottom: 8px;
+        }
+        .mb-3 {
+            margin-bottom: 12px;
+        }
+        .mt-2 {
+            margin-top: 8px;
+        }
+        .mt-3 {
+            margin-top: 12px;
+        }
+        .text-center {
+            text-align: center;
+        }
+        @media print {
+            body>* {
+                display: none !important;
+            }
+            body::before {
+                display: none !important;
+            }
+            body::after {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="splashScreen">
+        <div class="splash-outer-ring"><div class="splash-inner-ring"><i class="fas fa-mosque"></i></div></div>
+        <div class="splash-title">الحلقات القرآنية</div>
+        <div class="splash-subtitle">نظام إدارة الحلقات القرآنية</div>
+        <div class="splash-loading"><div class="splash-loading-bar"></div></div>
+    </div>
+
+    <div id="loginScreen" class="login-container" style="display:none;">
+        <div class="login-card" id="loginCard">
+            <div class="login-header">
+                <div class="login-logo"><i class="fas fa-mosque"></i></div>
+                <h2>الحلقات القرآنية</h2>
+                <div class="mosque-name-display" id="mosqueNameDisplay">🕌 أدخل اسم المسجد</div>
+                <p>تسجيل الدخول إلى النظام</p>
+            </div>
+            <div class="login-tabs" id="loginTabs">
+                <button class="login-tab active" onclick="switchLoginTab('login')">🔑 تسجيل الدخول</button>
+                <button class="login-tab" onclick="switchLoginTab('register')">➕ حساب جديد</button>
+                <button class="login-tab" onclick="switchLoginTab('scan')">📷 مسح باركود</button>
+            </div>
+            <div id="loginFormArea">
+                <div class="form-group"><label>🕌 اسم المسجد</label><input type="text" id="mosqueNameInput" placeholder="مثال: مسجد الإمام الشافعي"></div>
+                <div class="form-group"><label>👤 اسم المستخدم</label><input type="text" id="username" placeholder="اسم الأستاذ"></div>
+                <div class="form-group"><label>🔒 كلمة المرور</label><input type="password" id="password" placeholder="كلمة المرور"></div>
+                <div class="role-selector">
+                    <button class="role-btn active" id="teacherRoleBtn" onclick="selectRole('teacher')"><i class="fas fa-chalkboard-teacher"></i> أستاذ</button>
+                    <button class="role-btn" id="supervisorRoleBtn" onclick="selectRole('supervisor')"><i class="fas fa-binoculars"></i> موجه</button>
+                </div>
+                <button class="login-btn" onclick="login()"><span>دخول</span><i class="fas fa-arrow-left"></i></button>
+            </div>
+            <div id="registerFormArea" style="display:none;">
+                <div class="form-group"><label>🕌 اسم المسجد</label><input type="text" id="regMosqueName" placeholder="اسم المسجد الجديد"></div>
+                <div class="form-group"><label>👤 اسم المستخدم الجديد</label><input type="text" id="regUsername" placeholder="اختر اسم مستخدم"></div>
+                <div class="form-group"><label>👤 اسم الأستاذ</label><input type="text" id="regTeacherName" placeholder="الاسم الكامل"></div>
+                <div class="form-group"><label>🔒 كلمة المرور</label><input type="password" id="regPassword" placeholder="اختر كلمة مرور"></div>
+                <div class="form-group"><label>🔒 تأكيد كلمة المرور</label><input type="password" id="regPassword2" placeholder="أعد كلمة المرور"></div>
+                <button class="login-btn" onclick="registerTeacher()"><span>إنشاء حساب</span><i class="fas fa-user-plus"></i></button>
+                <button class="btn btn-outline w-100 mt-2" onclick="switchLoginTab('login')">⬅ العودة لتسجيل الدخول</button>
+            </div>
+            <div id="scanFormArea" style="display:none;">
+                <div class="text-center mb-2">
+                    <p style="font-size:12px;color:#666;">وجّه الكاميرا نحو الباركود للدخول المباشر</p>
+                </div>
+                <div id="qrReader" style="width:100%;max-width:300px;margin:0 auto;border-radius:14px;overflow:hidden;"></div>
+                <div class="text-center mt-2">
+                    <p style="font-size:10px;color:#999;">أو</p>
+                    <div class="form-group"><label>📝 أدخل كود الباركود يدوياً</label><input type="text" id="manualQRCode" placeholder="الصق الكود هنا"></div>
+                    <button class="btn btn-primary btn-sm" onclick="processManualQR()">تحقق من الكود</button>
+                </div>
+                <button class="btn btn-outline w-100 mt-2" onclick="switchLoginTab('login');stopQRScanner();">⬅ العودة</button>
+            </div>
+            <div id="qrDisplayArea" style="display:none;" class="qr-section">
+                <h4 style="font-size:13px;margin-bottom:6px;">📱 الباركود الخاص بك</h4>
+                <p style="font-size:10px;color:#888;">امسح هذا الباركود للدخول المباشر</p>
+                <div class="qr-container" id="qrCodeContainer"></div>
+                <p style="font-size:9px;color:#999;word-break:break-all;" id="qrCodeText"></p>
+                <button class="btn btn-sm btn-outline mt-2" onclick="copyQRCode()"><i class="fas fa-copy"></i> نسخ كود الباركود</button>
+                <button class="btn btn-sm btn-red mt-2" onclick="hideQRDisplay()">إخفاء</button>
+            </div>
+            <div class="login-footer">© 2026 نظام الحلقات القرآنية - جميع الحقوق محفوظة</div>
+        </div>
+    </div>
+
+    <div id="appMain">
+        <header class="glass-header">
+            <div class="header-top">
+                <div class="logo">
+                    <div class="logo-icon"><i class="fas fa-mosque"></i></div>
+                    <div class="logo-text"><strong id="headerMosqueName">مسجد</strong><small id="roleDisplay">أستاذ الحلقة</small></div>
+                </div>
+                <div class="header-actions">
+                    <button class="icon-btn" onclick="showMyQR()"><i class="fas fa-qrcode"></i></button>
+                    <button class="icon-btn" onclick="toggleTheme()"><i class="fas fa-moon"></i></button>
+                    <button class="icon-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i></button>
+                </div>
+            </div>
+            <div class="date-card" onclick="openCalendar()">
+                <span><i class="fas fa-calendar-alt" style="color:var(--gold-king);"></i> <strong id="dateMain"></strong></span>
+                <span style="font-size:9px;color:#888;"><span id="hijriDate"></span> | <span id="gregDate"></span></span>
+            </div>
+            <div class="stats-mini" id="headerStats"></div>
+        </header>
+        <main class="container">
+            <div id="sec-today" class="section active"></div>
+            <div id="sec-students" class="section"></div>
+            <div id="sec-reports" class="section"></div>
+            <div id="sec-supervisor" class="section"></div>
+            <div id="sec-settings" class="section"></div>
+        </main>
+        <nav class="bottom-nav" id="bottomNav"></nav>
+    </div>
+
+    <div id="toastContainer"></div>
+    <div id="modalContainer"></div>
+
+    <script>
+        const APP_KEY = 'shafie_quran_multiuser_v3';
+        let appState = {
+            mosqueName: '',
+            mosqueId: '',
+            teachers: [],
+            currentUser: null,
+            role: 'teacher',
+            theme: 'light',
+            customColor: '#d4a037',
+            selectedDate: new Date().toISOString().split('T')[0],
+            students: [],
+            mainRing: { name: 'حلقة القرآن الكريم', teacher: '', time: 'بعد صلاة العصر' },
+            workingDays: [0, 1, 2, 3, 4, 5],
+            workingDaysText: 'الأحد, الاثنين, الثلاثاء, الأربعاء, الخميس, الجمعة',
+            attendance: {},
+            memorization: {},
+        };
+
+        const DAY_NAMES = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+        const DAY_NAMES_MAP = {
+            'احد': 0,
+            'الأحد': 0,
+            'الاحد': 0,
+            'اثنين': 1,
+            'الاثنين': 1,
+            'إثنين': 1,
+            'الإثنين': 1,
+            'ثلاثاء': 2,
+            'الثلاثاء': 2,
+            'اربعاء': 3,
+            'الأربعاء': 3,
+            'الاربعاء': 3,
+            'خميس': 4,
+            'الخميس': 4,
+            'جمعة': 5,
+            'الجمعة': 5,
+            'جمعه': 5,
+            'الجمعه': 5,
+            'سبت': 6,
+            'السبت': 6
+        };
+
+        let qrScannerInstance = null;
+        let currentLoginTab = 'login';
+
+        function parseWorkingDays(text) {
+            const parts = text.split(/[,،\s]+/).filter(p => p.trim());
+            const days = new Set();
+            parts.forEach(p => {
+                const key = p.trim().toLowerCase().replace(/[اأإآ]/g, 'ا');
+                if (DAY_NAMES_MAP[key] !== undefined) days.add(DAY_NAMES_MAP[key]);
+            });
+            return [...days].sort((a, b) => a - b);
+        }
+
+        function workingDaysToString(days) {
+            return days.map(d => DAY_NAMES[d]).join('، ');
+        }
+
+        function generateMosqueId(name) {
+            let hash = 0;
+            for (let i = 0; i < name.length; i++) {
+                hash = ((hash << 5) - hash) + name.charCodeAt(i);
+                hash |= 0;
+            }
+            return 'MSQ' + Math.abs(hash).toString(36).toUpperCase().padStart(6, '0').slice(0, 6);
+        }
+
+        function generateQRPayload(mosqueId, teacherId) {
+            const payload = JSON.stringify({ m: mosqueId, t: teacherId, v: 1 });
+            return btoa(unescape(encodeURIComponent(payload)));
+        }
+
+        function parseQRPayload(code) {
+            try {
+                const decoded = decodeURIComponent(escape(atob(code)));
+                const data = JSON.parse(decoded);
+                if (data.m && data.t && data.v) return data;
+                return null;
+            } catch (e) {
+                return null;
+            }
+        }
+
+        function initSplash() {
+            setTimeout(() => {
+                document.getElementById('splashScreen').classList.add('hide');
+                setTimeout(() => {
+                    document.getElementById('splashScreen').style.display = 'none';
+                    document.getElementById('loginScreen').style.display = 'flex';
+                    loadState();
+                    if (!appState.workingDaysText) appState.workingDaysText = workingDaysToString(
+                        appState.workingDays);
+                    applyCustomColor();
+                    applyTheme();
+                    updateMosqueNameDisplay();
+                    if (appState.currentUser) {
+                        showMainApp();
+                    }
+                    setupEnterKey();
+                }, 600);
+            }, 2200);
+        }
+
+        function setupEnterKey() {
+            document.getElementById('password').addEventListener('keydown', e => { if (e.key === 'Enter') login
+            (); });
+            document.getElementById('username').addEventListener('keydown', e => { if (e.key === 'Enter') document
+                    .getElementById('password').focus(); });
+            document.getElementById('regPassword2').addEventListener('keydown', e => { if (e.key === 'Enter')
+                    registerTeacher(); });
+        }
+
+        function loadState() {
+            const saved = localStorage.getItem(APP_KEY);
+            if (saved) { try { appState = { ...appState, ...JSON.parse(saved) }; } catch (e) {} }
+            if (!appState.teachers) appState.teachers = [];
+            if (!appState.students) appState.students = [];
+            if (!appState.attendance) appState.attendance = {};
+            if (!appState.memorization) appState.memorization = {};
+            if (!appState.workingDays) appState.workingDays = [0, 1, 2, 3, 4, 5];
+            if (!appState.workingDaysText) appState.workingDaysText = workingDaysToString(appState.workingDays);
+            if (!appState.customColor) appState.customColor = '#d4a037';
+            if (!appState.mainRing) appState.mainRing = { name: 'حلقة القرآن الكريم', teacher: '', time: 'بعد صلاة العصر' };
+            if (!appState.mosqueId && appState.mosqueName) appState.mosqueId = generateMosqueId(appState.mosqueName);
+            saveState();
+        }
+
+        function saveState() { localStorage.setItem(APP_KEY, JSON.stringify(appState)); }
+
+        function applyCustomColor() {
+            const c = appState.customColor;
+            const root = document.documentElement;
+            root.style.setProperty('--gold-king', c);
+            root.style.setProperty('--accent-gradient',
+                `linear-gradient(135deg, ${c} 0%, ${lighten(c,35)} 35%, ${darken(c,18)} 100%)`);
+        }
+
+        function lighten(hex, p) { const n = parseInt(hex.slice(1), 16);
+            const r = Math.min(255, (n >> 16) + Math.round(2.55 * p));
+            const g = Math.min(255, ((n >> 8) & 0xFF) + Math.round(2.55 * p));
+            const b = Math.min(255, (n & 0xFF) + Math.round(2.55 * p)); return '#' + ((r << 16) | (g << 8) | b).toString(
+                16).padStart(6, '0'); }
+
+        function darken(hex, p) { const n = parseInt(hex.slice(1), 16);
+            const r = Math.max(0, (n >> 16) - Math.round(2.55 * p));
+            const g = Math.max(0, ((n >> 8) & 0xFF) - Math.round(2.55 * p));
+            const b = Math.max(0, (n & 0xFF) - Math.round(2.55 * p)); return '#' + ((r << 16) | (g << 8) | b).toString(
+                16).padStart(6, '0'); }
+
+        function applyTheme() { document.body.classList.toggle('dark', appState.theme === 'dark'); }
+
+        function toggleTheme() { appState.theme = appState.theme === 'dark' ? 'light' : 'dark';
+            applyTheme();
+            saveState();
+            updateAllUI(); }
+
+        function selectRole(r) {
+            appState.role = r;
+            document.getElementById('teacherRoleBtn').classList.toggle('active', r === 'teacher');
+            document.getElementById('supervisorRoleBtn').classList.toggle('active', r === 'supervisor');
+        }
+
+        function updateMosqueNameDisplay() {
+            const display = document.getElementById('mosqueNameDisplay');
+            const input = document.getElementById('mosqueNameInput');
+            if (appState.mosqueName) {
+                display.textContent = '🕌 ' + appState.mosqueName;
+                input.value = appState.mosqueName;
+            } else {
+                display.textContent = '🕌 أدخل اسم المسجد';
+                input.value = '';
+            }
+            document.getElementById('regMosqueName').value = appState.mosqueName || '';
+        }
+
+        function switchLoginTab(tab) {
+            currentLoginTab = tab;
+            document.querySelectorAll('#loginTabs .login-tab').forEach(t => t.classList.remove('active'));
+            document.querySelector(`#loginTabs .login-tab:nth-child(${tab==='login'?1:tab==='register'?2:3})`).classList
+                .add('active');
+            document.getElementById('loginFormArea').style.display = tab === 'login' ? 'block' : 'none';
+            document.getElementById('registerFormArea').style.display = tab === 'register' ? 'block' : 'none';
+            document.getElementById('scanFormArea').style.display = tab === 'scan' ? 'block' : 'none';
+            document.getElementById('qrDisplayArea').style.display = 'none';
+            if (tab === 'scan') {
+                startQRScanner();
+            } else {
+                stopQRScanner();
+            }
+            updateMosqueNameDisplay();
+        }
+
+        function startQRScanner() {
+            stopQRScanner();
+            const readerEl = document.getElementById('qrReader');
+            readerEl.innerHTML = '';
+            if (typeof Html5Qrcode === 'undefined') {
+                readerEl.innerHTML =
+                    '<p style="text-align:center;padding:20px;color:#999;">مكتبة المسح غير متوفرة. استخدم الإدخال اليدوي.</p>';
+                return;
+            }
+            try {
+                qrScannerInstance = new Html5Qrcode("qrReader");
+                qrScannerInstance.start({ facingMode: "environment" }, { fps: 10, qrbox: { width: 220,
+                        height: 220 } },
+                    (decodedText) => {
+                        handleScannedQR(decodedText);
+                    },
+                    (errorMessage) => {}
+                ).catch(err => {
+                    readerEl.innerHTML =
+                        '<p style="text-align:center;padding:20px;color:#b13131;">تعذر الوصول للكاميرا. استخدم الإدخال اليدوي.</p>';
+                });
+            } catch (e) {
+                readerEl.innerHTML =
+                    '<p style="text-align:center;padding:20px;color:#b13131;">خطأ في تشغيل الماسح. استخدم الإدخال اليدوي.</p>';
+            }
+        }
+
+        function stopQRScanner() {
+            if (qrScannerInstance) {
+                try { qrScannerInstance.stop().catch(() => {}); } catch (e) {}
+                qrScannerInstance = null;
+            }
+            const readerEl = document.getElementById('qrReader');
+            if (readerEl) readerEl.innerHTML = '';
+        }
+
+        function handleScannedQR(decodedText) {
+            stopQRScanner();
+            processQRCode(decodedText);
+        }
+
+        function processManualQR() {
+            const code = document.getElementById('manualQRCode').value.trim();
+            if (!code) { showToast('أدخل كود الباركود', 'error'); return; }
+            processQRCode(code);
+        }
+
+        function processQRCode(code) {
+            const payload = parseQRPayload(code);
+            if (!payload) {
+                showToast('كود باركود غير صالح', 'error');
+                return;
+            }
+            const teacher = appState.teachers.find(t => t.id === payload.t && t.mosqueId === payload.m);
+            if (!teacher) {
+                showToast('لم يتم العثور على الأستاذ المرتبط بهذا الباركود', 'error');
+                return;
+            }
+            if (teacher.mosqueId !== appState.mosqueId && appState.mosqueId) {
+                if (!confirm(`هذا الباركود تابع لمسجد آخر. هل تريد التبديل إلى مسجد "${teacher.mosqueName||'غير معروف'}"؟`))
+                    return;
+            }
+            appState.mosqueId = teacher.mosqueId;
+            appState.mosqueName = teacher.mosqueName || '';
+            appState.currentUser = { id: teacher.id, username: teacher.username, role: teacher.role,
+                teacherName: teacher.teacherName, mosqueId: teacher.mosqueId, mosqueName: teacher.mosqueName,
+                loginTime: new Date().toISOString() };
+            appState.role = teacher.role;
+            appState.mainRing.teacher = teacher.teacherName || '';
+            saveState();
+            updateMosqueNameDisplay();
+            showMainApp();
+            showToast(`مرحباً ${teacher.teacherName||teacher.username} 🌙 تم الدخول عبر الباركود`, 'success');
+        }
+
+        function showMyQR() {
+            if (!appState.currentUser) return;
+            const payload = generateQRPayload(appState.mosqueId, appState.currentUser.id);
+            document.getElementById('qrDisplayArea').style.display = 'block';
+            document.getElementById('qrCodeText').textContent = 'الكود: ' + payload;
+            document.getElementById('qrCodeContainer').innerHTML = '';
+            if (typeof QRCode !== 'undefined') {
+                new QRCode(document.getElementById('qrCodeContainer'), {
+                    text: payload,
+                    width: 150,
+                    height: 150,
+                    colorDark: '#1a1a2e',
+                    colorLight: '#ffffff',
+                    correctLevel: QRCode.CorrectLevel.M
+                });
+            } else {
+                document.getElementById('qrCodeContainer').innerHTML =
+                    '<p style="padding:20px;">الكود: <br><strong>' + payload + '</strong></p>';
+            }
+            document.getElementById('modalContainer').innerHTML = `
+            <div class="modal-overlay" onclick="closeModal();hideQRDisplay();"><div class="modal-sheet" onclick="event.stopPropagation()">
+            <div class="modal-handle"></div><div class="modal-header-row"><h3>📱 الباركود الخاص بك</h3><button class="modal-close" onclick="closeModal();hideQRDisplay();"><i class="fas fa-times"></i></button></div>
+            <div class="qr-section">
+                <p style="font-size:11px;color:#888;">امسح هذا الباركود للدخول المباشر إلى حسابك</p>
+                <div class="qr-container" id="modalQRContainer"></div>
+                <p style="font-size:9px;color:#999;word-break:break-all;margin-top:6px;">${payload}</p>
+                <button class="btn btn-sm btn-outline mt-2" onclick="copyQRCodeFromModal('${payload}')"><i class="fas fa-copy"></i> نسخ الكود</button>
+            </div></div></div>`;
+            setTimeout(() => {
+                const mc = document.getElementById('modalQRContainer');
+                if (mc && typeof QRCode !== 'undefined') {
+                    mc.innerHTML = '';
+                    new QRCode(mc, { text: payload, width: 160, height: 160, colorDark: '#1a1a2e',
+                        colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.M });
+                }
+            }, 200);
+        }
+
+        function hideQRDisplay() {
+            document.getElementById('qrDisplayArea').style.display = 'none';
+        }
+
+        function copyQRCode() {
+            const code = document.getElementById('qrCodeText').textContent.replace('الكود: ', '');
+            copyToClipboard(code);
+        }
+
+        function copyQRCodeFromModal(code) { copyToClipboard(code); }
+
+        function copyToClipboard(text) {
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(text).then(() => showToast('تم نسخ الكود', 'success')).catch(() =>
+                    showToast('فشل النسخ', 'error'));
+            } else {
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                ta.style.position = 'fixed';
+                ta.style.opacity = '0';
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+                showToast('تم نسخ الكود', 'success');
+            }
+        }
+
+        function registerTeacher() {
+            const mosqueName = document.getElementById('regMosqueName').value.trim();
+            const username = document.getElementById('regUsername').value.trim();
+            const teacherName = document.getElementById('regTeacherName').value.trim();
+            const password = document.getElementById('regPassword').value;
+            const password2 = document.getElementById('regPassword2').value;
+
+            if (!mosqueName) { showToast('أدخل اسم المسجد', 'error'); return; }
+            if (!username) { showToast('أدخل اسم المستخدم', 'error'); return; }
+            if (!teacherName) { showToast('أدخل اسم الأستاذ', 'error'); return; }
+            if (password.length < 3) { showToast('كلمة المرور قصيرة (3 أحرف على الأقل)', 'error'); return; }
+            if (password !== password2) { showToast('كلمتا المرور غير متطابقتين', 'error'); return; }
+
+            const mosqueId = generateMosqueId(mosqueName);
+            const existing = appState.teachers.find(t => t.username === username && t.mosqueId === mosqueId);
+            if (existing) { showToast('اسم المستخدم موجود مسبقاً في هذا المسجد', 'error'); return; }
+
+            const maxId = Math.max(0, ...appState.teachers.map(t => t.id));
+            const newTeacher = {
+                id: maxId + 1,
+                username,
+                password,
+                teacherName,
+                role: 'teacher',
+                mosqueId,
+                mosqueName,
+                createdAt: new Date().toISOString()
+            };
+
+            appState.teachers.push(newTeacher);
+            if (!appState.mosqueId || appState.mosqueId !== mosqueId) {
+                appState.mosqueId = mosqueId;
+                appState.mosqueName = mosqueName;
+                appState.students = [];
+                appState.attendance = {};
+                appState.memorization = {};
+                appState.mainRing = { name: 'حلقة القرآن الكريم', teacher: teacherName, time: 'بعد صلاة العصر' };
+            }
+            appState.currentUser = { id: newTeacher.id, username, role: 'teacher', teacherName,
+                mosqueId, mosqueName, loginTime: new Date().toISOString() };
+            appState.role = 'teacher';
+            appState.mainRing.teacher = teacherName;
+            saveState();
+            updateMosqueNameDisplay();
+            showMainApp();
+            showToast('تم إنشاء الحساب بنجاح 🌟', 'success');
+            switchLoginTab('login');
+            document.getElementById('qrDisplayArea').style.display = 'block';
+            setTimeout(() => {
+                const payload = generateQRPayload(mosqueId, newTeacher.id);
+                document.getElementById('qrCodeText').textContent = 'الكود: ' + payload;
+                document.getElementById('qrCodeContainer').innerHTML = '';
+                if (typeof QRCode !== 'undefined') {
+                    new QRCode(document.getElementById('qrCodeContainer'), { text: payload, width: 150,
+                        height: 150, colorDark: '#1a1a2e', colorLight: '#ffffff',
+                        correctLevel: QRCode.CorrectLevel.M });
+                }
+            }, 300);
+        }
+
+        function login() {
+            const mosqueNameInput = document.getElementById('mosqueNameInput').value.trim();
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+
+            if (!mosqueNameInput) { showToast('أدخل اسم المسجد', 'error'); return; }
+            if (!username) { showToast('أدخل اسم المستخدم', 'error'); return; }
+            if (password.length < 3) { showToast('كلمة المرور قصيرة', 'error'); return; }
+
+            const mosqueId = generateMosqueId(mosqueNameInput);
+            const teacher = appState.teachers.find(t =>
+                t.username === username && t.password === password && t.mosqueId === mosqueId
+            );
+
+            if (teacher) {
+                appState.mosqueId = mosqueId;
+                appState.mosqueName = mosqueNameInput;
+                appState.currentUser = { id: teacher.id, username: teacher.username, role: teacher.role,
+                    teacherName: teacher.teacherName, mosqueId, mosqueName: mosqueNameInput,
+                loginTime: new Date().toISOString() };
+                appState.role = teacher.role;
+                appState.mainRing.teacher = teacher.teacherName || '';
+                saveState();
+                updateMosqueNameDisplay();
+                showMainApp();
+                showToast(`مرحباً ${teacher.teacherName||username} 🌙`, 'success');
+                return;
+            }
+
+            if (appState.teachers.length === 0 && password.length >= 3) {
+                const newTeacher = {
+                    id: 1,
+                    username,
+                    password,
+                    teacherName: username,
+                    role: appState.role,
+                    mosqueId,
+                    mosqueName: mosqueNameInput,
+                    createdAt: new Date().toISOString()
+                };
+                appState.teachers.push(newTeacher);
+                appState.mosqueId = mosqueId;
+                appState.mosqueName = mosqueNameInput;
+                appState.currentUser = { id: 1, username, role: appState.role, teacherName: username,
+                    mosqueId, mosqueName: mosqueNameInput, loginTime: new Date().toISOString() };
+                appState.mainRing.teacher = username;
+                saveState();
+                updateMosqueNameDisplay();
+                showMainApp();
+                showToast('تم إنشاء أول حساب للمسجد 🌟', 'success');
+                return;
+            }
+
+            showToast('بيانات الدخول غير صحيحة', 'error');
+        }
+
+        function logout() {
+            if (confirm('تسجيل الخروج؟')) {
+                appState.currentUser = null;
+                saveState();
+                document.getElementById('appMain').style.display = 'none';
+                document.getElementById('loginScreen').style.display = 'flex';
+                updateMosqueNameDisplay();
+                switchLoginTab('login');
+                hideQRDisplay();
+                document.getElementById('qrDisplayArea').style.display = 'none';
+            }
+        }
+
+        function showMainApp() {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('appMain').style.display = 'block';
+            document.getElementById('headerMosqueName').textContent = appState.mosqueName || 'المسجد';
+            document.getElementById('roleDisplay').textContent = appState.role === 'teacher' ? 'أستاذ الحلقة' :
+                'موجه عام';
+            updateAllUI();
+            renderBottomNav();
+            navigateTo('today');
+        }
+
+        function navigateTo(sec) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            const target = document.getElementById('sec-' + sec);
+            if (target) target.classList.add('active');
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            const ni = document.querySelector(`.nav-item[data-section="${sec}"]`);
+            if (ni) ni.classList.add('active');
+            renderSection(sec);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function renderBottomNav() {
+            const items = [
+                { section: 'today', icon: 'fa-calendar-check', label: 'اليوم' },
+                { section: 'students', icon: 'fa-users', label: 'الطلاب' },
+                { section: 'reports', icon: 'fa-chart-bar', label: 'التقارير' },
+            ];
+            if (appState.role === 'supervisor') items.push({ section: 'supervisor', icon: 'fa-binoculars',
+                label: 'الإشراف' });
+            items.push({ section: 'settings', icon: 'fa-cog', label: 'الإعدادات' });
+            document.getElementById('bottomNav').innerHTML = items.map(i =>
+                `<button class="nav-item" data-section="${i.section}" onclick="navigateTo('${i.section}')"><i class="fas ${i.icon}"></i><span>${i.label}</span></button>`
+                ).join('');
+        }
+
+        function renderSection(s) {
+            switch (s) {
+                case 'today':
+                    renderToday();
+                    break;
+                case 'students':
+                    renderStudents();
+                    break;
+                case 'reports':
+                    renderReports();
+                    break;
+                case 'supervisor':
+                    renderSupervisor();
+                    break;
+                case 'settings':
+                    renderSettings();
+                    break;
+            }
+        }
+
+        function updateAllUI() {
+            const today = appState.selectedDate;
+            const dayAtt = appState.attendance[today] || {};
+            const active = appState.students.filter(s => s.active);
+            let pres = 0,
+                abs = 0,
+                lat = 0;
+            active.forEach(s => {
+                const d = dayAtt[s.id] || {};
+                if (d.status === 'present') pres++;
+                if (d.status === 'absent') abs++;
+                if (d.status === 'late') lat++;
+            });
+            document.getElementById('headerStats').innerHTML = `
+                <div class="stat-chip present"><i class="fas fa-circle"></i> حاضر: ${pres}</div>
+                <div class="stat-chip absent"><i class="fas fa-circle"></i> غائب: ${abs}</div>
+                <div class="stat-chip" style="color:#f0a030;border-color:rgba(240,160,48,0.3);"><i class="fas fa-circle"></i> متأخر: ${lat}</div>`;
+            updateDateDisplay();
+        }
+
+        function updateDateDisplay() {
+            const d = new Date(appState.selectedDate + 'T00:00:00');
+            const wd = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+            const mo = ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر',
+            'ديسمبر'];
+            document.getElementById('dateMain').textContent =
+                `${wd[d.getDay()]} - ${d.getDate()} ${mo[d.getMonth()]} ${d.getFullYear()}`;
+            document.getElementById('gregDate').textContent = `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
+            try { document.getElementById('hijriDate').textContent = new Intl.DateTimeFormat(
+                    'ar-SA-u-ca-islamic', { dateStyle: 'medium' }).format(d); } catch (e) {}
+        }
+
+        function isWorkingDay(dateStr) { return appState.workingDays.includes(new Date(dateStr + 'T00:00:00').getDay()); }
+
+        function renderToday() {
+            const container = document.getElementById('sec-today');
+            const today = appState.selectedDate;
+            updateAllUI();
+            const working = isWorkingDay(today);
+            container.innerHTML = `
+                <div class="section-title"><i class="fas fa-calendar-check"></i> تفقد اليوم ${!working?'<span style="font-size:11px;color:#b13131;">(يوم عطلة)</span>':''}</div>
+                <div class="card"><div class="card-header"><div class="card-title"><i class="fas fa-clipboard-list"></i> سجل الحضور والنقاط</div></div>
+                <div class="d-flex gap-2 flex-wrap mb-2">
+                    <button class="btn btn-sm btn-green" onclick="markAllAttendance('present')"><i class="fas fa-check-double"></i> الكل حاضر</button>
+                    <button class="btn btn-sm btn-outline" onclick="markAllAttendance('absent')"><i class="fas fa-times"></i> الكل غائب</button>
+                    <button class="btn btn-sm btn-wa" onclick="openShareModal('daily')"><i class="fas fa-share-alt"></i> مشاركة التقرير</button>
+                </div><div id="todayStudentList"></div></div>
+                <div class="card"><div class="card-header"><div class="card-title"><i class="fas fa-star"></i> التسميع اليومي</div></div><div id="todayMemorization"></div></div>`;
+            renderTodayStudentList();
+            renderTodayMemorization();
+        }
+
+        function getAttData(studentId) {
+            const today = appState.selectedDate;
+            if (!appState.attendance[today]) appState.attendance[today] = {};
+            if (!appState.attendance[today][studentId]) appState.attendance[today][studentId] = { status: 'unchecked',
+                points: 0, pages: 0 };
+            return appState.attendance[today][studentId];
+        }
+
+        function renderTodayStudentList() {
+            const container = document.getElementById('todayStudentList');
+            const active = appState.students.filter(s => s.active);
+            if (!active.length) { container.innerHTML =
+                    '<div class="empty-state"><i class="fas fa-user-slash"></i><p>لا يوجد طلاب بعد</p></div>'; return; }
+            container.innerHTML = active.map(s => {
+                const data = getAttData(s.id);
+                const st = data.status;
+                const dot = st === 'unchecked' ? '' : `<span class="status-dot ${st}"></span>`;
+                return `
+                <div class="student-item" onclick="cycleAttendance(${s.id})">
+                    <div class="student-avatar">${s.name.charAt(0)}${dot}</div>
+                    <div class="student-info"><div class="student-name">${s.name}</div>
+                    <div class="student-detail"><span>⭐ <input class="points-input" type="number" value="${data.points||0}" onclick="event.stopPropagation()" onchange="updatePoints(${s.id},this.value)"></span>
+                    <span>📄 <input class="pages-input" type="number" value="${data.pages||0}" onclick="event.stopPropagation()" onchange="updatePages(${s.id},this.value)"></span></div></div>
+                    <div class="attendance-toggle" onclick="event.stopPropagation()">
+                        <button class="att-btn ${st==='present'?'present-active':''}" onclick="setAttendance(${s.id},'present')">حاضر</button>
+                        <button class="att-btn ${st==='absent'?'absent-active':''}" onclick="setAttendance(${s.id},'absent')">غائب</button>
+                        <button class="att-btn ${st==='late'?'late-active':''}" onclick="setAttendance(${s.id},'late')">متأخر</button>
+                    </div></div>`;
+            }).join('');
+        }
+
+        function updatePoints(id, val) { getAttData(id).points = Math.max(0, parseInt(val) || 0);
+            saveState(); }
+
+        function updatePages(id, val) { getAttData(id).pages = Math.max(0, parseInt(val) || 0);
+            saveState(); }
+
+        function cycleAttendance(id) {
+            const data = getAttData(id);
+            const cycle = ['unchecked', 'present', 'late', 'absent'];
+            const idx = cycle.indexOf(data.status || 'unchecked');
+            data.status = cycle[(idx + 1) % 4];
+            if (data.status === 'unchecked') { data.points = 0;
+                data.pages = 0; }
+            saveState();
+            updateAllUI();
+            renderTodayStudentList();
+        }
+
+        function setAttendance(id, status) { getAttData(id).status = status;
+            saveState();
+            updateAllUI();
+            renderTodayStudentList(); }
+
+        function markAllAttendance(status) {
+            const today = appState.selectedDate;
+            appState.students.filter(s => s.active).forEach(s => {
+                if (!appState.attendance[today][s.id]) appState.attendance[today][s.id] = { status, pages: 0,
+                    points: 0 };
+                else appState.attendance[today][s.id].status = status;
+            });
+            saveState();
+            updateAllUI();
+            renderTodayStudentList();
+            showToast(status === 'present' ? 'تم تسجيل الكل حاضر' : 'تم تسجيل الكل غائب', 'success');
+        }
+
+        function renderTodayMemorization() {
+            const container = document.getElementById('todayMemorization');
+            const active = appState.students.filter(s => s.active);
+            if (!active.length) { container.innerHTML =
+                    '<div class="empty-state"><i class="fas fa-book-open"></i><p>لا يوجد طلاب</p></div>'; return; }
+            container.innerHTML = active.map(s => {
+                const mem = appState.memorization[s.id] || { surah: '-', fromAyah: 0, toAyah: 0, grade: '-' };
+                return `<div class="student-item"><div class="student-avatar">${s.name.charAt(0)}</div><div class="student-info"><div class="student-name">${s.name}</div><div class="student-detail">📖 ${mem.surah} | 📝 ${mem.fromAyah}-${mem.toAyah} | ⭐ ${mem.grade}</div></div><button class="btn btn-xs btn-outline" onclick="openMemorizationModal(${s.id})">تعديل</button></div>`;
+            }).join('');
+        }
+
+        function openMemorizationModal(id) {
+            const s = appState.students.find(st => st.id === id);
+            const mem = appState.memorization[id] || { surah: 'البقرة', fromAyah: 1, toAyah: 5, grade: 'جيد' };
+            document.getElementById('modalContainer').innerHTML = `
+            <div class="modal-overlay" onclick="closeModal()"><div class="modal-sheet" onclick="event.stopPropagation()">
+            <div class="modal-handle"></div><div class="modal-header-row"><h3>📖 ${s.name}</h3><button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button></div>
+            <div class="form-group"><label>السورة</label><input id="memSurah" value="${mem.surah}"></div>
+            <div class="d-flex gap-2"><div class="form-group flex-1"><label>من آية</label><input type="number" id="memFrom" value="${mem.fromAyah}"></div><div class="form-group flex-1"><label>إلى آية</label><input type="number" id="memTo" value="${mem.toAyah}"></div></div>
+            <div class="form-group"><label>التقدير</label><select id="memGrade">${['ممتاز','جيد جداً','جيد','مقبول','ضعيف'].map(g=>`<option ${mem.grade===g?'selected':''}>${g}</option>`).join('')}</select></div>
+            <button class="btn btn-primary w-100" onclick="saveMemorization(${id})">💾 حفظ التسميع</button></div></div>`;
+        }
+
+        function saveMemorization(id) {
+            appState.memorization[id] = {
+                surah: document.getElementById('memSurah').value,
+                fromAyah: parseInt(document.getElementById('memFrom').value) || 0,
+                toAyah: parseInt(document.getElementById('memTo').value) || 0,
+                grade: document.getElementById('memGrade').value,
+                lastUpdate: appState.selectedDate
+            };
+            saveState();
+            closeModal();
+            renderTodayMemorization();
+            showToast('تم حفظ التسميع', 'success');
+        }
+
+        function closeModal() { document.getElementById('modalContainer').innerHTML = '';
+            hideQRDisplay(); }
+
+        function openCalendar() {
+            document.getElementById('modalContainer').innerHTML = `
+            <div class="modal-overlay" onclick="closeModal()"><div class="modal-sheet" onclick="event.stopPropagation()">
+            <div class="modal-handle"></div><h3>📅 اختر التاريخ</h3>
+            <input type="date" id="datePicker" value="${appState.selectedDate}" style="width:100%;padding:12px;border-radius:14px;margin:10px 0;border:1px solid var(--glass-border);background:rgba(255,255,255,0.4);">
+            <button class="btn btn-primary w-100" onclick="selectDate()">✅ عرض</button></div></div>`;
+        }
+
+        function selectDate() { appState.selectedDate = document.getElementById('datePicker').value;
+            saveState();
+            closeModal();
+            updateAllUI();
+            renderToday(); }
+
+        function generateReportText(type) {
+            const today = appState.selectedDate;
+            const dayAtt = appState.attendance[today] || {};
+            const active = appState.students.filter(s => s.active);
+            let pres = 0,
+                abs = 0,
+                lat = 0,
+                pts = 0,
+                pgs = 0;
+            const lines = [];
+            active.forEach(s => {
+                const d = dayAtt[s.id] || {};
+                if (d.status === 'present') pres++;
+                if (d.status === 'absent') abs++;
+                if (d.status === 'late') lat++;
+                pts += d.points || 0;
+                pgs += d.pages || 0;
+                lines.push(
+                    `${d.status==='present'?'✅':d.status==='absent'?'❌':d.status==='late'?'🕐':'⬜'} ${s.name} | ⭐${d.points||0} | 📄${d.pages||0}`
+                    );
+            });
+
+            if (type === 'daily') {
+                return `📊 *تقرير يومي - ${today}*\n🕌 ${appState.mosqueName}\n👤 ${appState.currentUser?.teacherName||''}\n\n✅ حاضر: ${pres} | ❌ غائب: ${abs} | 🕐 متأخر: ${lat}\n⭐ النقاط: ${pts} | 📄 الصفحات: ${pgs}\n📈 نسبة الحضور: ${active.length?Math.round(pres/active.length*100):0}%\n\n${lines.join('\n')}\n\n🕋 حفظكم الله ورعاكم`;
+            } else if (type === 'weekly') {
+                const start = new Date(today);
+                start.setDate(start.getDate() - start.getDay());
+                const days = Array.from({ length: 7 }, (_, i) => new Date(start.getTime() + i * 86400000).toISOString()
+                    .split('T')[0]);
+                const report = active.map(s => {
+                    let sp = 0,
+                        sa = 0,
+                        spts = 0,
+                        spgs = 0;
+                    days.forEach(day => {
+                        const d = (appState.attendance[day] || {})[s.id];
+                        if (d) { if (d.status === 'present') sp++; if (d.status === 'absent') sa++;
+                            spts += d.points || 0;
+                            spgs += d.pages || 0; }
+                    });
+                    return `👤 ${s.name}: ✅${sp} ❌${sa} ⭐${spts} 📄${spgs}`;
+                });
+                return `📊 *تقرير أسبوعي*\n📅 ${days[0]} ➜ ${days[6]}\n🕌 ${appState.mosqueName}\n👤 ${appState.currentUser?.teacherName||''}\n\n${report.join('\n')}\n\n🕋 وفقكم الله`;
+            } else if (type === 'monthly') {
+                const d = new Date(today);
+                const month = d.getMonth(),
+                    year = d.getFullYear();
+                const moNames = ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر',
+                    'نوفمبر', 'ديسمبر'
+                ];
+                const report = active.map(s => {
+                    let sp = 0,
+                        sa = 0,
+                        spts = 0,
+                        spgs = 0;
+                    Object.keys(appState.attendance).forEach(day => {
+                        const dd = new Date(day);
+                        if (dd.getMonth() === month && dd.getFullYear() === year) {
+                            const data = appState.attendance[day][s.id];
+                            if (data) { if (data.status === 'present') sp++; if (data.status ===
+                                    'absent') sa++;
+                                spts += data.points || 0;
+                                spgs += data.pages || 0; }
+                        }
+                    });
+                    return `👤 ${s.name}: ✅${sp} ❌${sa} ⭐${spts} 📄${spgs}`;
+                });
+                return `📊 *تقرير شهري*\n📅 ${moNames[month]} ${year}\n🕌 ${appState.mosqueName}\n👤 ${appState.currentUser?.teacherName||''}\n\n${report.join('\n')}\n\n🕋 بارك الله فيكم`;
+            }
+            return '';
+        }
+
+        function openShareModal(type) {
+            const reportText = generateReportText(type);
+            const encodedText = encodeURIComponent(reportText);
+            const titleMap = { daily: 'اليومي', weekly: 'الأسبوعي', monthly: 'الشهري' };
+
+            document.getElementById('modalContainer').innerHTML = `
+            <div class="modal-overlay" onclick="closeModal()"><div class="modal-sheet" onclick="event.stopPropagation()">
+            <div class="modal-handle"></div><div class="modal-header-row"><h3>📤 مشاركة التقرير ${titleMap[type]||''}</h3><button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button></div>
+            <div class="highlight-box" style="max-height:150px;overflow-y:auto;font-size:10px;white-space:pre-wrap;">${reportText}</div>
+            <div class="share-grid mt-3">
+                <button class="share-btn-card" onclick="shareViaWhatsApp('${encodedText.replace(/'/g,"\\'")}')">
+                    <i class="fab fa-whatsapp" style="color:#25D366;"></i> واتساب
+                </button>
+                <button class="share-btn-card" onclick="shareViaTelegram('${encodedText.replace(/'/g,"\\'")}')">
+                    <i class="fab fa-telegram-plane" style="color:#0088cc;"></i> تيليجرام
+                </button>
+                <button class="share-btn-card" onclick="shareViaEmail('${type}')">
+                    <i class="fas fa-envelope" style="color:#555;"></i> بريد إلكتروني
+                </button>
+                <button class="share-btn-card" onclick="copyReportToClipboard('${reportText.replace(/'/g,"\\'").replace(/\n/g,'\\n')}')">
+                    <i class="fas fa-copy" style="color:#6c5ce7;"></i> نسخ النص
+                </button>
+                <button class="share-btn-card" onclick="shareNative('${reportText.replace(/'/g,"\\'").replace(/\n/g,'\\n')}')">
+                    <i class="fas fa-share-alt" style="color:var(--gold-king);"></i> مشاركة النظام
+                </button>
+                <button class="share-btn-card" onclick="printReport('${type}')">
+                    <i class="fas fa-print" style="color:#333;"></i> طباعة
+                </button>
+            </div></div></div>`;
+        }
+
+        function shareViaWhatsApp(encodedText) {
+            closeModal();
+            window.open(`https://wa.me/?text=${encodedText}`, '_blank');
+            showToast('تم فتح واتساب', 'success');
+        }
+
+        function shareViaTelegram(encodedText) {
+            closeModal();
+            window.open(`https://t.me/share/url?text=${encodedText}`, '_blank');
+            showToast('تم فتح تيليجرام', 'success');
+        }
+
+        function shareViaEmail(type) {
+            closeModal();
+            const reportText = generateReportText(type);
+            const subject = `تقرير ${type==='daily'?'يومي':type==='weekly'?'أسبوعي':'شهري'} - ${appState.mosqueName}`;
+            window.open(`mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(reportText)}`, '_blank');
+            showToast('تم فتح البريد الإلكتروني', 'success');
+        }
+
+        function copyReportToClipboard(reportText) {
+            closeModal();
+            const text = reportText.replace(/\\n/g, '\n');
+            copyToClipboard(text);
+            showToast('تم نسخ التقرير للحافظة 📋', 'success');
+        }
+
+        function shareNative(reportText) {
+            closeModal();
+            const text = reportText.replace(/\\n/g, '\n');
+            if (navigator.share) {
+                navigator.share({
+                    title: `تقرير ${appState.mosqueName}`,
+                    text: text,
+                }).then(() => showToast('تمت المشاركة بنجاح', 'success'))
+                    .catch(() => showToast('تم إلغاء المشاركة', 'info'));
+            } else {
+                copyToClipboard(text);
+                showToast('المشاركة الأصلية غير مدعومة. تم نسخ التقرير للحافظة.', 'info');
+            }
+        }
+
+        function printReport(type) {
+            closeModal();
+            const reportText = generateReportText(type);
+            const printWindow = window.open('', '_blank', 'width=600,height=600');
+            printWindow.document.write(`
+                <html dir="rtl"><head><meta charset="UTF-8"><title>تقرير ${type}</title>
+                <style>body{font-family:'Cairo',sans-serif;padding:20px;line-height:1.8;color:#1a1a2e;max-width:500px;margin:auto;}h2{color:#d4a037;text-align:center;}pre{white-space:pre-wrap;font-family:inherit;font-size:14px;background:#f9f6ef;padding:16px;border-radius:12px;border-right:4px solid #d4a037;}</style></head>
+                <body><h2>🕌 ${appState.mosqueName}</h2><pre>${reportText}</pre><p style="text-align:center;color:#999;font-size:10px;">تم إنشاؤه بواسطة نظام الحلقات القرآنية</p></body></html>
+            `);
+            printWindow.document.close();
+            setTimeout(() => { printWindow.print(); }, 500);
+            showToast('تم فتح نافذة الطباعة 🖨️', 'success');
+        }
+
+        function sendDailyWhatsApp() {
+            const reportText = generateReportText('daily');
+            window.open(`https://wa.me/?text=${encodeURIComponent(reportText)}`, '_blank');
+        }
+
+        function sendWeeklyWhatsApp() {
+            const reportText = generateReportText('weekly');
+            window.open(`https://wa.me/?text=${encodeURIComponent(reportText)}`, '_blank');
+        }
+
+        function sendMonthlyWhatsApp() {
+            const reportText = generateReportText('monthly');
+            window.open(`https://wa.me/?text=${encodeURIComponent(reportText)}`, '_blank');
+        }
+
+        function renderStudents() {
+            const container = document.getElementById('sec-students');
+            const active = appState.students.filter(s => s.active);
+            container.innerHTML = `
+                <div class="section-title"><i class="fas fa-users"></i> طلاب الحلقة (${active.length})</div>
+                <button class="btn btn-sm btn-primary mb-3" onclick="openAddStudentModal()"><i class="fas fa-plus"></i> إضافة طالب جديد</button>
+                ${active.map(s=>`
+                <div class="student-item" onclick="openStudentDetail(${s.id})">
+                    <div class="student-avatar">${s.name.charAt(0)}</div>
+                    <div class="student-info"><div class="student-name">${s.name}</div><div class="student-detail">👤 ${s.age||'?'} سنة 📞 ${s.phone||'-'}</div></div>
+                    <button class="btn btn-xs btn-outline" onclick="event.stopPropagation();openEditStudentModal(${s.id})"><i class="fas fa-edit"></i></button>
+                    <button class="btn btn-xs btn-red" onclick="event.stopPropagation();deleteStudent(${s.id})"><i class="fas fa-trash"></i></button>
+                </div>`).join('')}
+                ${appState.students.filter(s=>!s.active).length?`<div class="card mt-3"><div class="card-header">📦 غير نشطين</div>${appState.students.filter(s=>!s.active).map(s=>`<div class="student-item" style="opacity:0.6;"><div class="student-avatar">${s.name.charAt(0)}</div><div>${s.name}</div><button class="btn btn-xs btn-green" onclick="reactivateStudent(${s.id})">تنشيط</button></div>`).join('')}</div>`:''}`;
+        }
+
+        function openStudentDetail(id) {
+            const s = appState.students.find(st => st.id === id);
+            const mem = appState.memorization[id] || {};
+            let pres = 0,
+                abs = 0,
+                pts = 0,
+                pgs = 0;
+            Object.keys(appState.attendance).forEach(day => {
+                const d = appState.attendance[day][id];
+                if (d && d.status !== 'unchecked') { if (d.status === 'present') pres++; if (d.status === 'absent')
+                        abs++;
+                    pts += d.points || 0;
+                    pgs += d.pages || 0; }
+            });
+            document.getElementById('modalContainer').innerHTML = `
+            <div class="modal-overlay" onclick="closeModal()"><div class="modal-sheet" onclick="event.stopPropagation()">
+            <div class="modal-handle"></div><div class="modal-header-row"><h3>👤 ${s.name}</h3><button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button></div>
+            <p><strong>العمر:</strong> ${s.age||'-'} | <strong>الهاتف:</strong> ${s.phone||'-'} | <strong>ولي الأمر:</strong> ${s.parentName||'-'}</p>
+            <p><strong>آخر تسميع:</strong> ${mem.surah||'-'} (${mem.fromAyah||0}-${mem.toAyah||0}) ${mem.grade||''}</p>
+            <hr><p>✅ الحضور: ${pres} | ❌ الغياب: ${abs} | ⭐ النقاط: ${pts} | 📄 الصفحات: ${pgs}</p></div></div>`;
+        }
+
+        function openAddStudentModal() {
+            document.getElementById('modalContainer').innerHTML = `
+            <div class="modal-overlay" onclick="closeModal()"><div class="modal-sheet" onclick="event.stopPropagation()">
+            <div class="modal-handle"></div><h3>➕ طالب جديد</h3>
+            <div class="form-group"><label>الاسم</label><input id="newName"></div>
+            <div class="form-group"><label>العمر</label><input type="number" id="newAge" value="10"></div>
+            <div class="form-group"><label>الهاتف</label><input id="newPhone"></div>
+            <div class="form-group"><label>ولي الأمر</label><input id="newParent"></div>
+            <button class="btn btn-primary w-100" onclick="addStudent()">إضافة</button></div></div>`;
+        }
+
+        function addStudent() {
+            const name = document.getElementById('newName').value.trim();
+            if (!name) { showToast('أدخل الاسم', 'error'); return; }
+            const id = Math.max(0, ...appState.students.map(s => s.id)) + 1;
+            appState.students.push({ id, name, age: parseInt(document.getElementById('newAge').value) || 0,
+                phone: document.getElementById('newPhone').value, parentName: document.getElementById('newParent')
+                    .value, joinedDate: new Date().toISOString().split('T')[0], active: true });
+            saveState();
+            closeModal();
+            renderStudents();
+            showToast('تمت الإضافة', 'success');
+        }
+
+        function openEditStudentModal(id) {
+            const s = appState.students.find(st => st.id === id);
+            document.getElementById('modalContainer').innerHTML = `
+            <div class="modal-overlay" onclick="closeModal()"><div class="modal-sheet" onclick="event.stopPropagation()">
+            <div class="modal-handle"></div><h3>✏️ ${s.name}</h3>
+            <div class="form-group"><label>الاسم</label><input id="editName" value="${s.name}"></div>
+            <div class="form-group"><label>العمر</label><input type="number" id="editAge" value="${s.age||10}"></div>
+            <div class="form-group"><label>الهاتف</label><input id="editPhone" value="${s.phone||''}"></div>
+            <div class="form-group"><label>ولي الأمر</label><input id="editParent" value="${s.parentName||''}"></div>
+            <button class="btn btn-primary w-100" onclick="saveEditStudent(${id})">حفظ</button></div></div>`;
+        }
+
+        function saveEditStudent(id) {
+            const s = appState.students.find(st => st.id === id);
+            s.name = document.getElementById('editName').value.trim() || s.name;
+            s.age = parseInt(document.getElementById('editAge').value) || s.age;
+            s.phone = document.getElementById('editPhone').value;
+            s.parentName = document.getElementById('editParent').value;
+            saveState();
+            closeModal();
+            renderStudents();
+            showToast('تم الحفظ', 'success');
+        }
+
+        function deleteStudent(id) { if (confirm('تعطيل الطالب؟')) { appState.students.find(s => s.id === id).active =
+                false;
+                saveState();
+                renderStudents(); } }
+
+        function reactivateStudent(id) { appState.students.find(s => s.id === id).active = true;
+            saveState();
+            renderStudents(); }
+
+        function renderReports() {
+            const today = appState.selectedDate;
+            const dayAtt = appState.attendance[today] || {};
+            const active = appState.students.filter(s => s.active);
+            let pres = 0,
+                abs = 0,
+                lat = 0,
+                pts = 0,
+                pgs = 0;
+            active.forEach(s => { const d = dayAtt[s.id] || {}; if (d.status === 'present') pres++; if (d.status ===
+                    'absent') abs++; if (d.status === 'late') lat++;
+                pts += d.points || 0;
+                pgs += d.pages || 0; });
+            document.getElementById('sec-reports').innerHTML = `
+            <div class="section-title"><i class="fas fa-chart-bar"></i> تقارير ${today}</div>
+            <div class="d-flex gap-2 flex-wrap mb-3">
+                <button class="btn btn-sm btn-wa" onclick="openShareModal('daily')"><i class="fas fa-share-alt"></i> مشاركة يومي</button>
+                <button class="btn btn-sm btn-telegram" onclick="openShareModal('weekly')"><i class="fas fa-share-alt"></i> مشاركة أسبوعي</button>
+                <button class="btn btn-sm btn-email" onclick="openShareModal('monthly')"><i class="fas fa-share-alt"></i> مشاركة شهري</button>
+            </div>
+            <div class="card"><div class="card-title">📊 ملخص اليوم</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;text-align:center;"><div><span style="font-size:28px;font-weight:900;color:#0d7c3e;">${pres}</span><br>حاضر</div><div><span style="font-size:28px;font-weight:900;color:#b13131;">${abs}</span><br>غائب</div><div><span style="font-size:28px;font-weight:900;color:#f0a030;">${lat}</span><br>متأخر</div><div><span style="font-size:28px;font-weight:900;color:var(--gold-king);">${active.length?Math.round(pres/active.length*100):0}%</span><br>نسبة</div></div><p class="mt-2">⭐ النقاط: <strong>${pts}</strong> | 📄 الصفحات: <strong>${pgs}</strong></p></div>
+            <div class="card"><div class="card-title">📋 تفاصيل الطلاب</div>${active.map(s=>{const d=dayAtt[s.id]||{};return`<div class="student-item"><div class="student-avatar">${s.name.charAt(0)}</div><div>${s.name}</div><span style="margin-right:auto;">${d.status==='present'?'✅':d.status==='absent'?'❌':d.status==='late'?'🕐':'⬜'}</span><span>⭐${d.points||0} 📄${d.pages||0}</span></div>`;}).join('')}</div>`;
+        }
+
+        function renderSupervisor() {
+            const today = appState.selectedDate;
+            const dayAtt = appState.attendance[today] || {};
+            const active = appState.students.filter(s => s.active);
+            const pres = active.filter(s => (dayAtt[s.id] || {}).status === 'present').length;
+            const allTeachers = appState.teachers.filter(t => t.mosqueId === appState.mosqueId);
+            document.getElementById('sec-supervisor').innerHTML = `
+            <div class="section-title"><i class="fas fa-binoculars"></i> الإشراف العام</div>
+            <div class="card"><div class="card-header"><div class="card-title">📌 ${appState.mainRing.name}</div><span>${appState.mainRing.time}</span></div>
+            <p>المعلم: ${appState.mainRing.teacher||'غير محدد'} | الطلاب: ${active.length} | الحضور: ${pres}</p>
+            ${active.map(s=>`<div class="student-item"><div class="student-avatar">${s.name.charAt(0)}</div><div>${s.name}</div><span>${(dayAtt[s.id]||{}).status==='present'?'✅':(dayAtt[s.id]||{}).status==='absent'?'❌':'⬜'}</span></div>`).join('')}</div>
+            <div class="d-flex gap-2 flex-wrap mb-3">
+                <button class="btn btn-sm btn-wa" onclick="openShareModal('daily')"><i class="fas fa-share-alt"></i> مشاركة التقرير اليومي</button>
+            </div>
+            ${allTeachers.length>1?`<div class="card"><div class="card-title">👥 الأساتذة في المسجد</div>${allTeachers.map(t=>`<div class="student-item"><div class="student-avatar">${(t.teacherName||t.username).charAt(0)}</div><div class="student-info"><div class="student-name">${t.teacherName||t.username}</div><div class="student-detail">@{${t.username}} | ${t.role==='teacher'?'أستاذ':'موجه'}</div></div><button class="btn btn-xs btn-outline" onclick="viewTeacherQR(${t.id})"><i class="fas fa-qrcode"></i></button></div>`).join('')}</div>`:''}`;
+        }
+
+        function viewTeacherQR(teacherId) {
+            const teacher = appState.teachers.find(t => t.id === teacherId);
+            if (!teacher) return;
+            const payload = generateQRPayload(teacher.mosqueId, teacher.id);
+            document.getElementById('modalContainer').innerHTML = `
+            <div class="modal-overlay" onclick="closeModal()"><div class="modal-sheet" onclick="event.stopPropagation()">
+            <div class="modal-handle"></div><div class="modal-header-row"><h3>📱 باركود ${teacher.teacherName||teacher.username}</h3><button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button></div>
+            <div class="qr-section"><div class="qr-container" id="supervisorQRContainer"></div>
+            <p style="font-size:9px;color:#999;word-break:break-all;margin-top:6px;">${payload}</p>
+            <button class="btn btn-sm btn-outline mt-2" onclick="copyToClipboard('${payload}')"><i class="fas fa-copy"></i> نسخ الكود</button></div></div></div>`;
+            setTimeout(() => {
+                const mc = document.getElementById('supervisorQRContainer');
+                if (mc && typeof QRCode !== 'undefined') {
+                    mc.innerHTML = '';
+                    new QRCode(mc, { text: payload, width: 160, height: 160, colorDark: '#1a1a2e',
+                        colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.M });
+                }
+            }, 200);
+        }
+
+        function renderSettings() {
+            const wdText = appState.workingDaysText || '';
+            const presets = ['#d4a037', '#0d7c3e', '#1a2a4a', '#8e44ad', '#b13131', '#e67e22', '#2c3e50'];
+            const allTeachers = appState.teachers.filter(t => t.mosqueId === appState.mosqueId);
+            document.getElementById('sec-settings').innerHTML = `
+            <div class="section-title"><i class="fas fa-cog"></i> الإعدادات</div>
+            <div class="card"><div class="card-title">🕌 المسجد</div>
+            <div class="form-group"><label>اسم المسجد</label><input id="settingsMosqueName" value="${appState.mosqueName||''}"></div>
+            <button class="btn btn-primary w-100" onclick="saveMosqueName()">💾 حفظ اسم المسجد</button></div>
+            <div class="card"><div class="card-title">🎨 تخصيص اللون</div><div class="d-flex gap-2 flex-wrap">${presets.map(c=>`<span class="color-preset ${appState.customColor===c?'selected':''}" style="background:${c};" onclick="changeColor('${c}')"></span>`).join('')}<input type="color" value="${appState.customColor}" onchange="changeColor(this.value)" style="width:32px;height:32px;border-radius:50%;cursor:pointer;border:none;"></div></div>
+            <div class="card"><div class="card-title">📅 أيام الدوام</div><p style="font-size:10px;color:#888;margin-bottom:6px;">اكتب أيام الأسبوع (مثال: الأحد, الاثنين, الثلاثاء, الأربعاء, الخميس)</p>
+            <div class="form-group"><input type="text" id="workingDaysInput" value="${wdText}"></div>
+            <div class="highlight-box">🗓️ <strong>الأيام الحالية:</strong> ${workingDaysToString(appState.workingDays)||'لم تحدد'}</div>
+            <button class="btn btn-primary w-100" onclick="saveWorkingDays()">💾 حفظ أيام الدوام</button></div>
+            <div class="card"><div class="card-title">📌 الحلقة</div>
+            <div class="form-group"><label>اسم الحلقة</label><input id="ringName" value="${appState.mainRing.name}"></div>
+            <div class="form-group"><label>المعلم</label><input id="ringTeacher" value="${appState.mainRing.teacher}"></div>
+            <div class="form-group"><label>الوقت</label><input id="ringTime" value="${appState.mainRing.time}"></div>
+            <button class="btn btn-primary w-100" onclick="saveRing()">حفظ</button></div>
+            ${allTeachers.length>0?`<div class="card"><div class="card-title">👥 الأساتذة (${allTeachers.length})</div>${allTeachers.map(t=>`<div class="student-item"><div class="student-avatar">${(t.teacherName||t.username).charAt(0)}</div><div class="student-info"><div class="student-name">${t.teacherName||t.username} ${t.id===appState.currentUser?.id?'(أنت)':''}</div><div class="student-detail">@{${t.username}} | ${t.role}</div></div><button class="btn btn-xs btn-outline" onclick="viewTeacherQR(${t.id})"><i class="fas fa-qrcode"></i></button>${t.id!==appState.currentUser?.id?`<button class="btn btn-xs btn-red" onclick="removeTeacher(${t.id})"><i class="fas fa-trash"></i></button>`:''}</div>`).join('')}</div>`:''}
+            <div class="card"><button class="btn btn-sm btn-red w-100" onclick="resetAllData()">🗑️ مسح جميع البيانات</button></div>`;
+        }
+
+        function saveMosqueName() {
+            const newName = document.getElementById('settingsMosqueName').value.trim();
+            if (!newName) { showToast('أدخل اسم المسجد', 'error'); return; }
+            const newMosqueId = generateMosqueId(newName);
+            appState.teachers.forEach(t => { if (t.mosqueId === appState.mosqueId) { t.mosqueId = newMosqueId;
+                    t.mosqueName = newName; } });
+            appState.mosqueId = newMosqueId;
+            appState.mosqueName = newName;
+            if (appState.currentUser) { appState.currentUser.mosqueId = newMosqueId;
+                appState.currentUser.mosqueName = newName; }
+            saveState();
+            document.getElementById('headerMosqueName').textContent = newName;
+            updateMosqueNameDisplay();
+            renderSettings();
+            showToast('تم حفظ اسم المسجد', 'success');
+        }
+
+        function removeTeacher(teacherId) {
+            if (!confirm('حذف هذا الأستاذ من المسجد؟')) return;
+            appState.teachers = appState.teachers.filter(t => !(t.id === teacherId && t.mosqueId === appState
+            .mosqueId));
+            saveState();
+            renderSettings();
+            showToast('تم حذف الأستاذ', 'success');
+        }
+
+        function saveWorkingDays() {
+            const text = document.getElementById('workingDaysInput').value.trim();
+            appState.workingDaysText = text;
+            const days = parseWorkingDays(text);
+            if (days.length === 0) { showToast('لم يتم التعرف على أيام! اكتب مثل: السبت، الأحد، الاثنين', 'error'); return; }
+            appState.workingDays = days;
+            saveState();
+            renderSettings();
+            updateAllUI();
+            showToast(`تم حفظ أيام الدوام: ${workingDaysToString(days)}`, 'success');
+        }
+
+        function changeColor(c) { appState.customColor = c;
+            applyCustomColor();
+            saveState();
+            renderSettings(); }
+
+        function saveRing() {
+            appState.mainRing.name = document.getElementById('ringName').value;
+            appState.mainRing.teacher = document.getElementById('ringTeacher').value;
+            appState.mainRing.time = document.getElementById('ringTime').value;
+            saveState();
+            showToast('تم حفظ إعدادات الحلقة', 'success');
+        }
+
+        function resetAllData() {
+            if (confirm('⚠️ مسح جميع البيانات؟')) { appState.students = [];
+                appState.attendance = {};
+                appState.memorization = {};
+                saveState();
+                updateAllUI();
+                renderSettings();
+                showToast('تم مسح البيانات', 'error'); }
+        }
+
+        function showToast(msg, type = 'info') {
+            const t = document.createElement('div');
+            t.className = `toast-item ${type}`;
+            t.innerHTML = `${type==='success'?'✅':type==='error'?'❌':'ℹ️'} ${msg}`;
+            document.getElementById('toastContainer').appendChild(t);
+            setTimeout(() => { t.style.opacity = '0';
+                setTimeout(() => t.remove(), 300); }, 2800);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => initSplash());
+        document.addEventListener('gesturestart', e => e.preventDefault());
+
+        window.addEventListener('beforeunload', () => { stopQRScanner(); });
+    </script>
+</body>
+</html>
