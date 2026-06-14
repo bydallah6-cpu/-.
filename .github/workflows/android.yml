@@ -1,0 +1,70 @@
+name: Build Android APK
+on:
+  push:
+    branches: [ main ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Source Code
+      uses: actions/checkout@v3
+
+    - name: Set up NodeJS
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16
+
+    - name: Install Cordova
+      run: npm install -g cordova
+
+    - name: Create Cordova Project
+      run: |
+        cordova create build_dir com.bydallah6.myapp "App"
+        cd build_dir
+        cordova platform add android
+        # تثبيت إضافة الكاميرا الرسمية لتفعيل صلاحيات الكاميرا تلقائياً
+        cordova plugin add cordova-plugin-camera --save
+        rm -rf www/*
+
+    - name: Copy Files to Cordova
+      run: |
+        cp index.html build_dir/www/
+        cp style.css build_dir/www/
+        cp icon.png build_dir/ || true
+        cp splash.png build_dir/ || true
+        cp config.xml build_dir/ || true
+
+    - name: Inject Permissions & WhatsApp Queries
+      run: |
+        # حقن إعدادات نظام أندرويد للسماح بالوصول وتتبع تطبيق الواتساب (لأندرويد 11 وأحدث)
+        sed -i '/<\/widget>/i \    <platform name="android">\n        <config-file target="AndroidManifest.xml" parent="/*">\n            <queries>\n                <package android:name="com.whatsapp" />\n            </queries>\n        </config-file>\n    </platform>' build_dir/config.xml
+
+    - name: Build APK
+      run: |
+        cd build_dir
+        cordova build android --debug
+
+    - name: Upload APK Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: my-app-apk
+        path: build_dir/platforms/android/app/build/outputs/apk/debug/app-debug.apk
+
+    # خطوة إنشاء تقرير البناء التلقائي في صفحة الـ Actions
+    - name: Generate Build Report
+      if: always()
+      run: |
+        echo "## 📊 تقرير بناء تطبيق الأندرويد" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        if [ "${{ job.status }}" = "success" ]; then
+          echo "### ✅ الحالة: تم البناء بنجاح والصلاحيات جاهزة!" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "### ❌ الحالة: فشلت عملية البناء، راجع سجل الأخطاء." >> $GITHUB_STEP_SUMMARY
+        fi
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "---" >> $GITHUB_STEP_SUMMARY
+        echo "🛠️ **الميزات المدمجة في هذا الإصدار:**" >> $GITHUB_STEP_SUMMARY
+        echo "- 📸 صلاحية الكاميرا مفعّلة عبر Cordova Plugin." >> $GITHUB_STEP_SUMMARY
+        echo "- 💬 إذن الوصول وحقن حزمة الواتساب لضمان التوجيه والمشاركة الفورية." >> $GITHUB_STEP_SUMMARY
+        echo "- 👤 المسؤول عن الالتزام: @${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
+
