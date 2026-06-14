@@ -9,6 +9,13 @@ jobs:
     - name: Checkout Source Code
       uses: actions/checkout@v3
 
+    # خطوة الجافا الإلزامية (إصدار قديم v3) عشان الكوردوفا ما يعطيش خطأ البناء
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'zulu'
+        java-version: '17'
+
     - name: Set up NodeJS
       uses: actions/setup-node@v3
       with:
@@ -22,7 +29,7 @@ jobs:
         cordova create build_dir com.bydallah6.myapp "App"
         cd build_dir
         cordova platform add android
-        # تثبيت إضافة الكاميرا الرسمية لتفعيل صلاحيات الكاميرا تلقائياً
+        # إضافة إضافة الكاميرا للتقارير والصلاحيات
         cordova plugin add cordova-plugin-camera --save
         rm -rf www/*
 
@@ -30,13 +37,14 @@ jobs:
       run: |
         cp index.html build_dir/www/
         cp style.css build_dir/www/
+        cp script.js build_dir/www/ || true
         cp icon.png build_dir/ || true
         cp splash.png build_dir/ || true
         cp config.xml build_dir/ || true
 
     - name: Inject Permissions & WhatsApp Queries
       run: |
-        # حقن إعدادات نظام أندرويد للسماح بالوصول وتتبع تطبيق الواتساب (لأندرويد 11 وأحدث)
+        # حقن صلاحيات وتتبع الواتساب لأندرويد الحديث
         sed -i '/<\/widget>/i \    <platform name="android">\n        <config-file target="AndroidManifest.xml" parent="/*">\n            <queries>\n                <package android:name="com.whatsapp" />\n            </queries>\n        </config-file>\n    </platform>' build_dir/config.xml
 
     - name: Build APK
@@ -50,7 +58,7 @@ jobs:
         name: my-app-apk
         path: build_dir/platforms/android/app/build/outputs/apk/debug/app-debug.apk
 
-    # خطوة إنشاء تقرير البناء التلقائي في صفحة الـ Actions
+    # إنشاء التقرير التلقائي في صفحة الـ Actions
     - name: Generate Build Report
       if: always()
       run: |
@@ -63,8 +71,7 @@ jobs:
         fi
         echo "" >> $GITHUB_STEP_SUMMARY
         echo "---" >> $GITHUB_STEP_SUMMARY
-        echo "🛠️ **الميزات المدمجة في هذا الإصدار:**" >> $GITHUB_STEP_SUMMARY
-        echo "- 📸 صلاحية الكاميرا مفعّلة عبر Cordova Plugin." >> $GITHUB_STEP_SUMMARY
-        echo "- 💬 إذن الوصول وحقن حزمة الواتساب لضمان التوجيه والمشاركة الفورية." >> $GITHUB_STEP_SUMMARY
-        echo "- 👤 المسؤول عن الالتزام: @${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
-
+        echo "🛠️ **الميزات المدمجة:**" >> $GITHUB_STEP_SUMMARY
+        echo "- 📸 صلاحية الكاميرا مفعّلة." >> $GITHUB_STEP_SUMMARY
+        echo "- 💬 إذن الوصول وحقن حزمة الواتساب جاهز." >> $GITHUB_STEP_SUMMARY
+        echo "- 👤 المسؤول: @${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
