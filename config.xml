@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.bydallah6.myapp" version="1.0.0" xmlns="http://cordova.apache.org/ns/1.0" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    
+    <name>اكتب اسم تطبيقك هنا</name> 
+    
+    <description>تطبيق ويب مميز</description>
+    <content src="index.html" />
+    
+    <icon src="icon.png" />
+    <splash src="splash.png" />
+
+    <preference name="SplashScreenDelay" value="3000" />
+    <preference name="AutoHideSplashScreen" value="true" />
+    <preference name="FadeSplashScreen" value="true" />
+    <preference name="FadeSplashScreenDuration" value="500" />
+    <preference name="AndroidWindowSplashScreenAnimatedIcon" value="icon.png" />
+    <preference name="AndroidWindowSplashScreenBackground" value="#FFFFFF" />
+</widget>
+
