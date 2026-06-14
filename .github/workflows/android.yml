@@ -9,22 +9,21 @@ jobs:
       ANDROID_HOME: /usr/local/lib/android/sdk
     steps:
     - name: Checkout Source Code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
-    # إعداد الجافا (إصدار مستقر v3)
+    # تحديث الجافا للإصدار الرابع المستقر
     - name: Set up JDK 17
-      uses: actions/setup-java@v3
+      uses: actions/setup-java@v4
       with:
         distribution: 'zulu'
         java-version: '17'
 
-    # إعداد النود (إصدار مستقر v3)
+    # تحديث بيئة نود للإصدار الرابع المعتمد
     - name: Set up NodeJS
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
-        node-version: 16
+        node-version: 18
 
-    # الموافقة على تراخيص أندرويد تلقائياً لمنع توقف البناء
     - name: Accept Android Licenses
       run: |
         yes | ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager --licenses || true
@@ -32,13 +31,9 @@ jobs:
     - name: Install Cordova
       run: npm install -g cordova
 
-    # إنشاء المشروع ونقل الملفات بالترتيب الصحيح برمجياً
     - name: Create Cordova Project & Copy Files
       run: |
-        # 1. إنشاء المجلد الرئيسي
         cordova create build_dir com.bydallah6.myapp "App"
-        
-        # 2. نسخ ملف الإعدادات config.xml وملفات الويب أولاً قبل تهيئة المنصة
         cp config.xml build_dir/
         cp index.html build_dir/www/
         cp style.css build_dir/www/
@@ -46,7 +41,6 @@ jobs:
         cp icon.png build_dir/ || true
         cp splash.png build_dir/ || true
         
-        # 3. الدخول للمجلد وتثبيت المنصة والإضافات بناءً على الإعدادات المنقولة
         cd build_dir
         cordova platform add android
         cordova plugin add cordova-plugin-camera --save
@@ -56,8 +50,9 @@ jobs:
         cd build_dir
         cordova build android --debug
 
+    # الحل السحري: تحديث أداة الرفع للإصدار الرابع المقبول والمفعل في سيرفرات جيتهاب
     - name: Upload APK Artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: my-app-apk
         path: build_dir/platforms/android/app/build/outputs/apk/debug/app-debug.apk
